@@ -1,0 +1,3 @@
+Заброшено, статьи с готовым кодом на JS и Python:
+https://github.com/FOSWLY/summarize-articles
+https://github.com/FOSWLY/summarize-articles-backend

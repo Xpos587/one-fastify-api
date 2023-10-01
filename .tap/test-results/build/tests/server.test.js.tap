@@ -1,0 +1,6 @@
+TAP version 14
+# Subtest: Request to /healthcheck
+    1..0
+ok 1 - Request to /healthcheck # time=9.012ms
+
+1..1

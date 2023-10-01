@@ -1,0 +1,1 @@
+mihailabortnikov:6-gf_kOMuE - get api token url (https://oauth.yandex.ru/authorize?response_type=token&client_id=843a5a899e684d5b85ea510ae47762cb)
