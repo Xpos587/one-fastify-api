@@ -9,7 +9,8 @@
     "dev": "bash -c export NODE_ENV=development TS_NODE_BASEURL=./dist && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"tsc -w\" \"nodemon\"",
     "gen-db": "prisma generate && npx prisma db push",
     "studio": "npx prisma studio",
-    "dev-mongodb": "mongod --port 27017 --dbpath \"C:\\my-apps\\MongoDB\\Server\\5.0\\data\" --replSet rs0 --bind_ip localhost"
+    "dev-mongodb": "mongod --port 27017 --dbpath \"C:\\my-apps\\MongoDB\\Server\\5.0\\data\" --replSet rs0 --bind_ip localhost",
+    "mongodb": "mongod --port 27017 --dbpath /var/lib/mongodb --replSet rs0 --bind_ip localhost"
   },
   "keywords": [],
   "author": "Xpos587",
@@ -41,7 +42,6 @@
     "fastify": "^4.22.1",
     "fastify-plugin": "^4.5.1",
     "fastify-zod": "^1.4.0",
-    "file-stream-rotator": "^1.0.0",
     "gpt-tokenizer": "^2.1.1",
     "md5": "^2.3.0",
     "openai": "^4.10.0",

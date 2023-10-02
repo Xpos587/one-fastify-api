@@ -77,5 +77,5 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
         hash: hashApiKey
     });
 
-    console.log('isApiKeyValid:', isApiKeyValid);
+    request.log.info('isApiKeyValid:', isApiKeyValid);
 };

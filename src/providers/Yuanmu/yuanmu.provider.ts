@@ -8,7 +8,7 @@ import { v4 as uuid4 } from 'uuid';
 
 export class Yuanmu extends CompletionProvider {
     url = 'https://chat.yuanmu.tech/';
-    working = true;
+    working = false;
     hasStream = true;
     // plugins = {
     //     browser_op: {

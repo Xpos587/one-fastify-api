@@ -41,7 +41,7 @@ export default fp(async (fastify) => {
         swaggerOptions: {
             swagger: {
                 info: {
-                    title: 'OPEN AI API',
+                    title: 'OneAPI AI',
                     version: 'v1'
                 },
                 basePath: '/api/v1',

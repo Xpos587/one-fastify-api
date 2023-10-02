@@ -9,13 +9,17 @@ export function hashApiKey(apiKey: string) {
     const salt = crypto.randomBytes(16).toString('hex');
 
     /*
-     * Create a hash with 1000 iterations
+     * Create a hash with 1000 iterations and reduced hash size to 32 bytes (64 characters in hex)
      */
     const hash = crypto
-        .pbkdf2Sync(apiKey, salt, 1000, 64, 'sha512')
+        .pbkdf2Sync(apiKey, salt, 1000, 32, 'sha512')
         .toString('hex');
 
-    return { hash, salt };
+    const randomPosition = Math.floor(Math.random() * (hash.length + 1));
+    const modifiedHash =
+        'ai-' + hash.slice(0, randomPosition) + 'bodarev' + hash.slice(randomPosition);
+
+    return { hash: modifiedHash, salt };
 }
 
 export function verifyApiKey({
@@ -27,17 +31,19 @@ export function verifyApiKey({
     salt: string;
     hash: string;
 }) {
+    const originalHash = hash.replace('bodarev', '').replace('ai-', '');
+
     /*
      * Create a hash with the salt from the stored apiKey and the candidate apiKey
      */
     const candidateHash = crypto
-        .pbkdf2Sync(candidateApiKey, salt, 1000, 64, 'sha512')
+        .pbkdf2Sync(candidateApiKey, salt, 1000, 32, 'sha512')
         .toString('hex');
 
     /*
-     * If the candidateHash matches the hash we have stored for the apiKey
+     * If the candidateHash matches the original hash we have stored for the apiKey
      * then the candidate apiKey is correct
      */
 
-    return candidateHash === hash;
-};
+    return candidateHash === originalHash;
+}

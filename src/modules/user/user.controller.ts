@@ -33,6 +33,9 @@ export async function createUserHandler(
                 data: {
                     telegramId,
                     createdAt: new Date(Date.now()).toISOString(),
+                    requestCounts: {},
+                    dailyRequestCounts: {},
+                    minuteRequestCounts: {}
                 }
             });
 
@@ -97,6 +100,9 @@ export async function getUserByIdHandler(
                     id: user?.id,
                     object: 'user.information',
                     createdAt: user?.createdAt,
+                    requestCounts: user?.requestCounts || {},
+                    dailyRequestCounts: user?.dailyRequestCounts || {},
+                    minuteRequestCounts: user?.minuteRequestCounts || {},
                     balance: user?.balance,
                     telegramId: user?.telegramId
                 });

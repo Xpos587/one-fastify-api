@@ -7,7 +7,15 @@ import {
 export interface completionModel {
     createdAt: number;
     owned_by: string;
-    providers: { id?: string, provider: CompletionProviderConstructor }[];
+    providers: {
+        id?: string,
+        timeout?: number,
+        provider: CompletionProviderConstructor,
+        messages?: {
+            role: 'user' | 'assistant' | 'system' | 'function',
+            content: string
+        }[]
+    }[];
     limits: {
         perMinute: number,
         perDay: number
@@ -85,7 +93,7 @@ export const completionModels: Record<string, completionModel> = {
     },
     'claude-instant': {
         createdAt: new Date().getTime(),
-        owned_by: 'openai',
+        owned_by: 'anthropic',
         providers: [
             { provider: DakuGPT },
             { provider: CycloneGPT }
@@ -98,7 +106,7 @@ export const completionModels: Record<string, completionModel> = {
     },
     'claude-2': {
         createdAt: new Date().getTime(),
-        owned_by: 'openai',
+        owned_by: 'anthropic',
         providers: [
             { provider: AI4ALL },
             { provider: DakuGPT },
@@ -126,7 +134,7 @@ export const completionModels: Record<string, completionModel> = {
     },
     'llama-2-70b': {
         createdAt: new Date().getTime(),
-        owned_by: 'openai',
+        owned_by: 'meta',
         providers: [
             { provider: DakuGPT },
             { provider: CycloneGPT }
@@ -139,7 +147,7 @@ export const completionModels: Record<string, completionModel> = {
     },
     'code-llama-34b': {
         createdAt: new Date().getTime(),
-        owned_by: 'openai',
+        owned_by: 'meta',
         providers: [
             {
                 id: 'codellama-34b',
@@ -158,7 +166,7 @@ export const completionModels: Record<string, completionModel> = {
     },
     'oasst-sft-6-llama-30b': {
         createdAt: new Date().getTime(),
-        owned_by: 'openai',
+        owned_by: 'meta',
         providers: [{ provider: CycloneGPT }],
         limits: {
             perMinute: 6,
@@ -185,7 +193,7 @@ export const completionModels: Record<string, completionModel> = {
             perDay: 90
         },
         hide: true
-    }
+    },
     /*
     Идея создать модель HeadlineGenius или Summarize,
     это обычная модель gpt-3.5-turbo, которой
@@ -196,4 +204,31 @@ export const completionModels: Record<string, completionModel> = {
     промпт для создания заголовка чата/беседы:
     "Пожалуйста, создайте заголовок от 2 до 6 слов, который кратко описывает нашу беседу, без введения, знаков пунктуации, кавычек, точек, символов или дополнительного текста. Удалите кавычки."
     */
+    'headline-summarize-001': {
+        createdAt: new Date().getTime(),
+        owned_by: 'oneapi',
+        providers: [
+            {
+                id: 'gpt-3.5-turbo',
+                provider: Yuanmu,
+                messages: [{
+                    role: 'system',
+                    content: 'Please create a 2 to 6 word title that briefly describes our conversation, without introduction, punctuation, quotation marks, periods, symbols, or additional text. Remove the quotes.'
+                }]
+            },
+            {
+                id: 'gpt-3.5-turbo',
+                provider: Zuki,
+                messages: [{
+                    role: 'system',
+                    content: 'Please create a 2 to 6 word title that briefly describes our conversation, without introduction, punctuation, quotation marks, periods, symbols, or additional text. Remove the quotes.'
+                }]
+            }
+        ],
+        limits: {
+            perMinute: 16,
+            perDay: 300
+        },
+        hide: false
+    }
 };
