@@ -10,4 +10,3 @@ export { NovaAI } from './NovaAI/novaai.provider';
 export { Zuki } from './ZukiJourney/zukijourney.provider';
 export { Pawan } from './Pawan/pawan.provider';
 export { CycloneGPT } from './CycloneGPT/cyclonegpt.provider';
-export { AI4ALL } from './AI4ALL/ai4all.provider';

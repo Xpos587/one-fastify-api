@@ -35,7 +35,7 @@ export class DakuGPT extends CompletionProvider {
 
         const openai = new OpenAI({
             baseURL: 'https://api.daku.tech/v1',
-            apiKey: 'sk-ZjlmNDc5MjhiOUJDT3BlbkFJMTA2N0VFM2FFY0Y2'
+            apiKey: 'hellokitties'
         });
 
         const completionStream = await openai.chat.completions.create({

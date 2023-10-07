@@ -1,16 +1,8 @@
 import { test } from 'tap';
-import { buildApp } from '../app';
-
-import fastifyAutoload from '@fastify/autoload';
-
-import path from 'path';
+import buildApp from '../app';
 
 test('requests the `/healthcheck` route', async (t) => {
     const fastify = await buildApp();
-
-    await fastify.register(fastifyAutoload, {
-        dir: path.join(__dirname, '../plugins')
-    });
 
     t.teardown(() => {
         fastify.close();

@@ -4,7 +4,9 @@ import { CreateCompletionInput } from './completion.schema';
 import { getMessagesTokenCount } from '../../utils/tokenizer.util';
 import { badRequest, BadRequestError } from '../../utils/badreq.util';
 
-import { completionModels } from '../../models/completion.models';
+import { delay } from '../../utils/promise.util';
+
+import loadCompletionModels from '../../models/completion';
 
 import { v4 } from 'uuid';
 import md5 from 'md5';
@@ -23,70 +25,33 @@ export async function createCompletionHandler(
                 presence_penalty, frequency_penalty
             } = request.body;
 
-            async function delay(ms: number): Promise<boolean> {
-                return new Promise(resolve => {
-                    setTimeout(() => resolve(true), ms);
-                });
-            };
+            const models = await loadCompletionModels();
 
-            const selectedModel = completionModels[model];
+            const selectedModel = models[model];
             badRequest(reply, !!selectedModel, `Model \'${model}\' doesn't exist.`);
-
-            const hashApiKey = String(request.headers['authorization']).split(' ')[1];
-
-
-            const apiKey = await request.server.prisma.apiKey.findFirst({
-                where: {
-                    apiKeyHash: hashApiKey
-                }
-            });
-
-            const user = await request.server.prisma.user.findUnique({
-                where: {
-                    id: apiKey?.userId,
-                }
-            });
-
-            const today: Date = new Date();
-            const year: number = today.getFullYear();
-            const month: number = today.getMonth() + 1; // добавляем 1, так как месяцы начинаются с 0
-            const day: number = today.getDate();
-
-            // Форматируем месяц и день, чтобы добавить ведущий ноль, если число меньше 10
-            const formattedMonth: string = month < 10 ? `0${month}` : `${month}`;
-            const formattedDay: string = day < 10 ? `0${day}` : `${day}`;
-
-            const formattedDate: string = `${year}-${formattedMonth}-${formattedDay}`;
-
-            if ((((user?.dailyRequestCounts as any)[model][formattedDate] || 0) >= selectedModel.limits.perDay) || (((user?.minuteRequestCounts as any)[model][formattedDate] || 0) >= selectedModel.limits.perMinute)) {
-                return reply
-                    .code(429)
-                    .type('application/json')
-                    .send({
-                        error: {
-                            message: 'Internal provider error occurred during request handling.',
-                            type: 'internal_server_error',
-                            param: null,
-                            code: null
-                        }
-                    })
-            };
 
             const providers = selectedModel.providers;
 
             const cmplId = 'chatcmpl-' + md5(v4());
-            let answer = '';
 
             let foundWorkingProvider = false;
 
             while (!foundWorkingProvider && providers.length > 0) {
                 try {
+                    let answer = '';
+
+                    // TODO Разобраться из-за чего возникает "undefined Connection error."
                     const provider = new providers[0].provider;
 
-                    request.log.info('Creating completion for \'%s\' by \'%s\'', model, providers[0].provider.name);
+                    request.server.log.debug(provider);
 
-                    if (!provider.working)
-                        throw new Error(providers[0].provider.name + ' is not working.').message;
+                    request.server.log.info('Creating completion for \'%s\' by \'%s\'', model, providers[0].provider.name);
+
+                    if (!provider.working) {
+                        request.server.log.warn(providers[0].provider.name + ' is not working.');
+                        providers.shift();
+                        continue;
+                    };
 
                     const id = providers[0].id;
                     const prompt = providers[0].messages;
@@ -107,8 +72,20 @@ export async function createCompletionHandler(
 
                     const promiseCompletionStream = new Promise(async (resolve) => {
                         try {
+                            /**
+                             * ! WARNING
+                             * Проблема связанная с Timeout
+                             * Если Timeout сработал, то код провайдера
+                             * продолжает работать и из-за этого
+                             * может начаться completionStream, даже, если
+                             * сработал timeout, а затем это может вызвать ошибку
+                             * StatusCode 500: reply was alredy sent из-за
+                             * того, что другой провайдер пытается отправить ответ или
+                             * провайдеры закончились и пытается отправиться сообщение
+                             * 500 Internal Provider Error.
+                            */
                             for await (let completion of completionStream) {
-                                resolve(false);
+                                if (completion) resolve(false);
                                 if (request.body.stream) {
                                     reply.raw.writeHead(200, { 'Content-Type': 'text/event-stream' });
                                 };
@@ -182,17 +159,21 @@ export async function createCompletionHandler(
                                 answer += completion.content;
                             };
                         } catch (err) {
-                            request.log.error((err as any).message);
+                            request.server.log.warn((err as any).message);
                             resolve(true);
-                        }
+                        };
                     });
-                    const timeout = await Promise.race([promiseCompletionStream, delay(providers[0].timeout || 5500)]);
+                    const timeout = await Promise.race([promiseCompletionStream, delay(providers[0].timeout)]);
 
-                    if (timeout) throw new Error(providers[0].provider.name + ', timeout.').message;
-                    else foundWorkingProvider = true;
+                    if (timeout) {
+                        request.server.log.warn(providers[0].provider.name + ', timeout.');
+                        providers.shift();
+                        continue;
+                    } else foundWorkingProvider = true;
                 } catch (err) {
-                    request.log.error(err);
+                    request.server.log.warn(err);
                     providers.shift();
+                    continue;
                 };
             };
             if (!foundWorkingProvider) {
@@ -207,50 +188,54 @@ export async function createCompletionHandler(
                             code: null
                         }
                     });
-            } else {
-                await request.server.prisma.user.update({
-                    where: {
-                        id: apiKey?.userId
-                    },
-                    data: {
-                        requestCounts: {
-                            model: ((user?.requestCounts as any)[model][formattedDate] || 0) + 1
-                        },
-                        dailyRequestCounts: {
-                            model: ((user?.requestCounts as any)[model][formattedDate] || 0) + 1
-                        },
-                        minuteRequestCounts: {
-                            model: ((user?.requestCounts as any)[model][formattedDate] || 0) + 1
-                        }
-                    }
-                });
             };
         } catch (err) {
             if (err instanceof BadRequestError) {
-                return reply
-                    .code(400)
-                    .type('application/json')
-                    .send({
-                        error: {
-                            message: err.message,
-                            type: 'invalid_request_error',
-                            param: null,
-                            code: null
-                        }
-                    });
+                return reply.code(400).send({
+                    error: {
+                        message: err.message,
+                        type: 'invalid_request_error',
+                        param: null,
+                        code: null
+                    }
+                });
             } else {
-                return reply
-                    .code(500)
-                    .type('application/json')
-                    .send({
-                        error: {
-                            message: 'Internal error occurred during request handling.',
-                            type: 'internal_server_error',
-                            param: null,
-                            code: null
-                        }
-                    });
+                reply.code(500).send({
+                    error: {
+                        message: 'Internal server error occurred during request handling.',
+                        type: 'internal_server_error',
+                        param: null,
+                        code: null
+                    }
+                });
             };
         };
+    });
+};
+
+export async function modelsCompletionHandler(
+    request: FastifyRequest,
+    reply: FastifyReply
+) {
+    await new Promise(async () => {
+        const completionModels = await loadCompletionModels();
+
+        const data = Object.entries(completionModels)
+            .filter(([id, model]) => !model.hide)
+            .map(([id, model]) => ({
+                id,
+                object: 'model',
+                createdAt: model.createdAt,
+                owned_by: model.owned_by,
+                // status: new model.provider().working ? 'working' : 'maintenance'
+            }));
+
+        return reply
+            .code(200)
+            .type('application/json')
+            .send({
+                object: 'list',
+                data
+            });
     });
 };

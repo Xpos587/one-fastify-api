@@ -1,27 +1,25 @@
 import Fastify, { type FastifyInstance } from 'fastify';
-// import * as Sentry from '@sentry/node';
 
-import fastifyAutoload from '@fastify/autoload';
+import { NODE_ENV, TRUST_PROXY, SSL_KEY, SSL_CERT } from './utils/env.util';
 
-import config from './config';
+import errorHandler from './middlewares/error.middleware';
+
+import plugins from './plugins';
 import router from './router';
 
 import { existsSync, readFileSync } from 'fs';
 
-import path from 'path';
+import path from 'node:path';
 
-async function buildApp(): Promise<FastifyInstance> {
+export default async function (): Promise<FastifyInstance> {
     /**
     * * SSL self-signed guide: https://youtu.be/r6gA1NCfvYA?si=zSbcx28RPsuo5pkG
     */
-    const key = 'certs/server.key';
-    const cert = 'certs/server.crt';
-
-    const sslIsExist = existsSync(cert) && existsSync(key);
+    const sslIsExist = existsSync(SSL_CERT) && existsSync(SSL_KEY);
 
     const fastify = Fastify({
         logger: {
-            level: config.NODE_ENV.toLowerCase() !== 'production' ? 'info' : 'warn',
+            level: NODE_ENV.toLowerCase() !== 'production' ? 'info' : 'warn',
             file: path.join(__dirname, '..', 'logs', `server.log`),
             redact: ['req.headers.authorization'],
             transport: {
@@ -48,9 +46,11 @@ async function buildApp(): Promise<FastifyInstance> {
             }
         },
         disableRequestLogging: true,
-        bodyLimit: config.BODY_LIMIT ?? 15e6,
-        maxParamLength: 500,
-        trustProxy: true,
+        bodyLimit: 5e6,
+        maxParamLength: 0,
+        connectionTimeout: 6e4,
+        trustProxy: TRUST_PROXY == false ? false : TRUST_PROXY,
+        ignoreTrailingSlash: true,
         ajv: {
             customOptions: {
                 removeAdditional: false,
@@ -64,33 +64,27 @@ async function buildApp(): Promise<FastifyInstance> {
         },
         ...(sslIsExist && {
             https: {
-                key: readFileSync(key),
-                cert: readFileSync(cert),
+                key: readFileSync(SSL_KEY),
+                cert: readFileSync(SSL_CERT),
             }
         })
     });
 
-    await fastify.register(fastifyAutoload, {
-        dir: path.join(__dirname, 'plugins')
-    });
+    // * Never try to install @fastify/env
+    await fastify.register(plugins);
 
-    fastify.register(router);
-
-    fastify.addHook('onClose', async () => {
-        await fastify.prisma.$disconnect();
-    });
+    await fastify.register(errorHandler);
+        
+    // await fastify.register(middie, { hook: 'preHandler' });
+    await fastify.register(router);
 
     process
         .on('unhandledRejection', (reason, promise) => {
-            // Sentry.captureException(reason);
-            fastify.log.error(reason, 'Unhandled Rejection at Promise', promise);
+            fastify.log.fatal(reason, 'Unhandled Rejection at Promise', promise);
         })
         .on('uncaughtException', (err) => {
-            // Sentry.captureException(err);
-            fastify.log.error(err, 'Uncaught Exception thrown');
-        })
+            fastify.log.fatal(err, 'Uncaught Exception thrown');
+        });
 
     return fastify;
 };
-
-export { buildApp };

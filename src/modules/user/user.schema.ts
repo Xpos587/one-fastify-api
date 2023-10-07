@@ -1,7 +1,7 @@
 import { buildJsonSchemas } from 'fastify-zod';
 import { z as zod } from 'zod';
 
-const createUserSchema = zod.object({
+const create_user_schema = zod.object({
     telegramId: zod.number({
         description: 'The telegram id of the user',
         invalid_type_error: 'Telegram id must be a string',
@@ -9,25 +9,25 @@ const createUserSchema = zod.object({
     })
 });
 
-const responseCreateUserSchema = zod.object({
+const response_create_user_schema = zod.object({
     id: zod.string(),
     object: zod.string(),
     createdAt: zod.number()
 });
 
-const responseGetUserSchema = zod.object({
+const response_get_user_schema = zod.object({
     id: zod.string(),
     object: zod.string(),
     createdAt: zod.number(),
     telegramId: zod.number()
 });
 
-export type CreateUserInput = zod.infer<typeof createUserSchema>;
+export type CreateUserInput = zod.infer<typeof create_user_schema>;
 
 export const userModels = {
-    createUserSchema,
-    responseCreateUserSchema,
-    responseGetUserSchema
+    create_user_schema,
+    response_create_user_schema,
+    response_get_user_schema
 };
 
 export const { schemas: userSchemas, $ref } = buildJsonSchemas(userModels, { $id: 'userSchema' });

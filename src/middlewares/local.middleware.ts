@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export async function localhostenticate(request: FastifyRequest, reply: FastifyReply) {
+export default async function (request: FastifyRequest, reply: FastifyReply) {
     const remoteAddress = request.ip;
 
     if (remoteAddress !== '127.0.0.1') {

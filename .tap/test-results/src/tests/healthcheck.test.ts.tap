@@ -1,0 +1,54 @@
+TAP version 14
+[06.10.2023 18:15:38] [32mINFO[39m (1984): [36m📅 Connected to database.[39m
+# Subtest: requests the `/healthcheck` route
+    not ok 1 - Failed building the validation schema for POST: /api/v1/user/create, due to error can't resolve reference userSchema\#/properties/create_user_schema from id \#
+      ---
+      stack: |
+        Boot.<anonymous> (node_modules/fastify/lib/route.js:375:21)
+        node_modules/avvio/boot.js:160:12
+        node_modules/avvio/plugin.js:275:7
+        done (node_modules/avvio/plugin.js:200:5)
+        check (node_modules/avvio/plugin.js:224:9)
+      at:
+        fileName: node_modules\fastify\lib\route.js
+        lineNumber: 375
+        columnNumber: 21
+        typeName: Boot
+        methodName: <anonymous>
+        functionName: Boot.<anonymous>
+      type: FastifyError
+      code: FST_ERR_SCH_VALIDATION_BUILD
+      statusCode: 500
+      tapCaught: returnedPromiseRejection
+      source: >2
+                      compileSchemasForValidation(context, opts.validatorCompiler || schemaController.validatorCompiler, isCustom)
+                    } catch (error) {
+                      throw new FST_ERR_SCH_VALIDATION_BUILD(opts.method, url, error.message)
+        --------------------^
+                    }
+      ...
+    
+    1..1
+not ok 1 - requests the `/healthcheck` route # time=639.586ms
+  ---
+  at:
+    fileName: src\tests\healthcheck.test.ts
+    lineNumber: 8
+    columnNumber: 16
+    typeName: Object
+    generated:
+      fileName: src/tests/healthcheck.test.ts
+      lineNumber: 8
+      columnNumber: 16
+  source: "\r
+  
+    \    t.teardown(() => {\r
+  
+    \        fastify.close();\r
+  
+    ---------------^
+  
+    \    });\n"
+  ...
+
+1..1

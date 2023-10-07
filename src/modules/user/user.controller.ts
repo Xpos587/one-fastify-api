@@ -59,7 +59,7 @@ export async function createUserHandler(
             } else {
                 reply.code(500).send({
                     error: {
-                        message: 'Internal Server Error',
+                        message: 'Internal server error occurred during request handling.',
                         type: 'internal_server_error',
                         param: null,
                         code: null
@@ -119,7 +119,7 @@ export async function getUserByIdHandler(
             } else {
                 reply.code(500).send({
                     error: {
-                        message: 'Internal Server Error',
+                        message: 'Internal server error occurred during request handling.',
                         type: 'internal_server_error',
                         param: null,
                         code: null

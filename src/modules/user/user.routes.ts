@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { createUserHandler, getUserByIdHandler } from './user.controller';
 import { $ref } from './user.schema';
 
-export async function userRoutes(
+export default async function (
     fastify: FastifyInstance
 ) {
     // POST /api/v1/user/create
@@ -12,9 +12,9 @@ export async function userRoutes(
         {
             preHandler: fastify.localhostenticate,
             schema: {
-                body: $ref('createUserSchema'),
+                body: $ref('create_user_schema'),
                 response: {
-                    200: $ref('responseCreateUserSchema')
+                    200: $ref('response_create_user_schema')
                 }
             }
         },
@@ -28,8 +28,7 @@ export async function userRoutes(
             preHandler: fastify.localhostenticate,
             schema: {
                 response: {
-                    200: $ref('responseGetUserSchema'),
-                    // 401: $ref('errorUserSchema')
+                    200: $ref('response_get_user_schema')
                 }
             }
         },

@@ -1,20 +1,23 @@
 import { FastifyInstance } from 'fastify';
-import cors from '@fastify/cors'
+import cors from '@fastify/cors';
 
-import { completionRoutes } from './modules/completion/completion.routes';
-import { summarizeRoutes } from './modules/summarize/summarize.routes';
-import { userRoutes } from './modules/user/user.routes';
-import { apiKeyRoutes } from './modules/apikey/apikey.routes';
-import { modelsRoutes } from './modules/models/models.routes';
+// import middlewares from './middlewares';
 
-export default async function router(fastify: FastifyInstance) {
-    fastify.register(cors, {
-        origin: false
+import userRoutes from './modules/user/user.routes';
+import apikeyRoutes from './modules/apikey/apikey.routes';
+import completionRoutes from './modules/completion/completion.routes';
+
+export default async function (fastify: FastifyInstance) {
+    // void fastify.use(middlewares);
+
+    // Enable CORS with default configuration
+    // Allow requests from all origins (any source can access the resources)
+    await fastify.register(cors, {
+        origin: true
     });
 
-    fastify.register(userRoutes, { prefix: '/api/v1/user' });
-    fastify.register(apiKeyRoutes, { prefix: '/api/v1/apikey' });
-    fastify.register(completionRoutes, { prefix: '/api/v1/chat/completions' });
-    // fastify.register(summarizeRoutes, { prefix: '/api/v1/chat/summarize' });
-    fastify.register(modelsRoutes, { prefix: '/api/v1/models' });
+    // Define API routes with proper prefixes
+    await fastify.register(userRoutes, { prefix: '/api/v1/user' });
+    await fastify.register(apikeyRoutes, { prefix: '/api/v1/apikey' });
+    await fastify.register(completionRoutes, { prefix: '/api/v1/chat/completions' });
 };

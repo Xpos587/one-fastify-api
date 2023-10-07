@@ -8,7 +8,7 @@ import { v4 as uuid4 } from 'uuid';
 
 export class Yuanmu extends CompletionProvider {
     url = 'https://chat.yuanmu.tech/';
-    working = false;
+    working = true;
     hasStream = true;
     // plugins = {
     //     browser_op: {
@@ -324,7 +324,7 @@ export class Yuanmu extends CompletionProvider {
         const { data } = await axios.post(
             'https://chat.yuanmu.tech/api/auth/login',
             {
-                email: 'jhajkssh@gmail.com',
+                email: 'hellokittie3089@mail.tm',
                 password: 'qwerty12345'
             },
             {
