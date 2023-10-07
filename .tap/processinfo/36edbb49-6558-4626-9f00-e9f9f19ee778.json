@@ -1,0 +1,184 @@
+{
+  "date": "2023-10-06T18:15:33.108Z",
+  "argv": [
+    "C:\\my-apps\\nodejs\\node.exe",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\tests\\completion.test.ts"
+  ],
+  "execArgv": [
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/ts-node/esm.mjs",
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/mock/dist/esm/legacy-loader.mjs",
+    "--no-warnings",
+    "--enable-source-maps",
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/processinfo/dist/esm/loader.mjs",
+    "--require=ts-node/register"
+  ],
+  "NODE_OPTIONS": "\"--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/processinfo/dist/esm/loader-legacy.mjs\" \"--no-warnings\"",
+  "cwd": "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api",
+  "pid": 6580,
+  "ppid": 7632,
+  "parent": null,
+  "uuid": "36edbb49-6558-4626-9f00-e9f9f19ee778",
+  "files": [
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\tests\\completion.test.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\app.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\router.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\index.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.routes.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.controller.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\badreq.util.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.schema.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.routes.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.controller.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\hash.util.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.schema.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.routes.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.controller.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\tokenizer.util.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\promise.util.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\models\\completion\\index.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.schema.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\env.util.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\auth.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\auth.middleware.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\captcha.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\compress.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\error.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\error.middleware.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\healthcheck.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\localhost.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\local.middleware.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\prisma.plugin.ts",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\zod.plugin.ts"
+  ],
+  "sources": {
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\tests\\completion.test.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/tests/completion.test.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\app.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/app.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\router.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/router.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\index.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/middlewares/index.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.routes.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/user/user.routes.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.controller.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/user/user.controller.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\badreq.util.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/utils/badreq.util.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\user\\user.schema.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/user/user.schema.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.routes.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/apikey/apikey.routes.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.controller.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/apikey/apikey.controller.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\hash.util.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/utils/hash.util.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\apikey\\apikey.schema.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/apikey/apikey.schema.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.routes.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/completion/completion.routes.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.controller.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/completion/completion.controller.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\tokenizer.util.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/utils/tokenizer.util.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\promise.util.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/utils/promise.util.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\models\\completion\\index.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/models/completion/index.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\modules\\completion\\completion.schema.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/modules/completion/completion.schema.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\utils\\env.util.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/utils/env.util.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\auth.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/auth.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\auth.middleware.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/middlewares/auth.middleware.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\captcha.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/captcha.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\compress.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/compress.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\error.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/error.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\error.middleware.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/middlewares/error.middleware.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\healthcheck.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/healthcheck.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\localhost.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/localhost.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\middlewares\\local.middleware.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/middlewares/local.middleware.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\prisma.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/prisma.plugin.ts"
+    ],
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\src\\plugins\\zod.plugin.ts": [
+      "c:/Users/x3082/codes/JavaScript/one-fastify-api/src/plugins/zod.plugin.ts"
+    ]
+  },
+  "root": "36edbb49-6558-4626-9f00-e9f9f19ee778",
+  "externalID": "src\\tests\\completion.test.ts",
+  "code": 1,
+  "signal": null,
+  "runtime": 5165.5619,
+  "globalsAdded": [
+    "__extends",
+    "__assign",
+    "__rest",
+    "__decorate",
+    "__param",
+    "__esDecorate",
+    "__runInitializers",
+    "__propKey",
+    "__setFunctionName",
+    "__metadata",
+    "__awaiter",
+    "__generator",
+    "__exportStar",
+    "__createBinding",
+    "__values",
+    "__read",
+    "__spread",
+    "__spreadArrays",
+    "__spreadArray",
+    "__await",
+    "__asyncGenerator",
+    "__asyncDelegator",
+    "__asyncValues",
+    "__makeTemplateObject",
+    "__importStar",
+    "__importDefault",
+    "__classPrivateFieldGet",
+    "__classPrivateFieldSet",
+    "__classPrivateFieldIn",
+    "__addDisposableResource",
+    "__disposeResources",
+    "NODE_CLIENT"
+  ]
+}

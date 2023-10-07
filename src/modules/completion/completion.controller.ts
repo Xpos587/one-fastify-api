@@ -4,7 +4,9 @@ import { CreateCompletionInput } from './completion.schema';
 import { getMessagesTokenCount } from '../../utils/tokenizer.util';
 import { badRequest, BadRequestError } from '../../utils/badreq.util';
 
-import { completionModels } from '../../models/completion.models';
+import { delay } from '../../utils/promise.util';
+
+import loadCompletionModels from '../../models/completion';
 
 import { v4 } from 'uuid';
 import md5 from 'md5';
@@ -23,31 +25,41 @@ export async function createCompletionHandler(
                 presence_penalty, frequency_penalty
             } = request.body;
 
-            async function delay(ms: number): Promise<boolean> {
-                return new Promise(resolve => {
-                    setTimeout(() => resolve(true), ms);
-                });
-            };
+            const models = await loadCompletionModels();
 
-            const selectedModel = completionModels[model];
+            const selectedModel = models[model];
             badRequest(reply, !!selectedModel, `Model \'${model}\' doesn't exist.`);
 
             const providers = selectedModel.providers;
 
             const cmplId = 'chatcmpl-' + md5(v4());
-            let answer = '';
 
             let foundWorkingProvider = false;
 
             while (!foundWorkingProvider && providers.length > 0) {
                 try {
+                    let answer = '';
+
+                    // TODO Разобраться из-за чего возникает "undefined Connection error."
                     const provider = new providers[0].provider;
+
+                    request.server.log.debug(provider);
+
+                    request.server.log.info('Creating completion for \'%s\' by \'%s\'', model, providers[0].provider.name);
+
+                    if (!provider.working) {
+                        request.server.log.warn(providers[0].provider.name + ' is not working.');
+                        providers.shift();
+                        continue;
+                    };
+
                     const id = providers[0].id;
+                    const prompt = providers[0].messages;
 
                     const completionStream = provider.create_completion(
                         request.server,
                         id || model,
-                        messages,
+                        prompt ? [...prompt, ...messages] : messages,
                         {
                             temperature,
                             top_p,
@@ -60,8 +72,20 @@ export async function createCompletionHandler(
 
                     const promiseCompletionStream = new Promise(async (resolve) => {
                         try {
+                            /**
+                             * ! WARNING
+                             * Проблема связанная с Timeout
+                             * Если Timeout сработал, то код провайдера
+                             * продолжает работать и из-за этого
+                             * может начаться completionStream, даже, если
+                             * сработал timeout, а затем это может вызвать ошибку
+                             * StatusCode 500: reply was alredy sent из-за
+                             * того, что другой провайдер пытается отправить ответ или
+                             * провайдеры закончились и пытается отправиться сообщение
+                             * 500 Internal Provider Error.
+                            */
                             for await (let completion of completionStream) {
-                                resolve(false);
+                                if (completion) resolve(false);
                                 if (request.body.stream) {
                                     reply.raw.writeHead(200, { 'Content-Type': 'text/event-stream' });
                                 };
@@ -135,28 +159,35 @@ export async function createCompletionHandler(
                                 answer += completion.content;
                             };
                         } catch (err) {
-                            request.log.error(err);
+                            request.server.log.warn((err as any).message);
                             resolve(true);
-                        }
+                        };
                     });
-                    const timeout = await Promise.race([promiseCompletionStream, delay(5500)]);
+                    const timeout = await Promise.race([promiseCompletionStream, delay(providers[0].timeout)]);
 
-                    if (timeout) throw new Error('Timeout');
-                    else foundWorkingProvider = true;
+                    if (timeout) {
+                        request.server.log.warn(providers[0].provider.name + ', timeout.');
+                        providers.shift();
+                        continue;
+                    } else foundWorkingProvider = true;
                 } catch (err) {
-                    request.log.error(err);
+                    request.server.log.warn(err);
                     providers.shift();
+                    continue;
                 };
             };
             if (!foundWorkingProvider) {
-                return reply.code(500).send({
-                    error: {
-                        message: 'Internal provider error occurred during request handling.',
-                        type: 'internal_server_error',
-                        param: null,
-                        code: null
-                    }
-                });
+                return reply
+                    .code(500)
+                    .type('application/json')
+                    .send({
+                        error: {
+                            message: 'Internal provider error occurred during request handling.',
+                            type: 'internal_server_error',
+                            param: null,
+                            code: null
+                        }
+                    });
             };
         } catch (err) {
             if (err instanceof BadRequestError) {
@@ -169,9 +200,9 @@ export async function createCompletionHandler(
                     }
                 });
             } else {
-                return reply.code(500).send({
+                reply.code(500).send({
                     error: {
-                        message: 'Internal error occurred during request handling.',
+                        message: 'Internal server error occurred during request handling.',
                         type: 'internal_server_error',
                         param: null,
                         code: null
@@ -179,5 +210,32 @@ export async function createCompletionHandler(
                 });
             };
         };
+    });
+};
+
+export async function modelsCompletionHandler(
+    request: FastifyRequest,
+    reply: FastifyReply
+) {
+    await new Promise(async () => {
+        const completionModels = await loadCompletionModels();
+
+        const data = Object.entries(completionModels)
+            .filter(([id, model]) => !model.hide)
+            .map(([id, model]) => ({
+                id,
+                object: 'model',
+                createdAt: model.createdAt,
+                owned_by: model.owned_by,
+                // status: new model.provider().working ? 'working' : 'maintenance'
+            }));
+
+        return reply
+            .code(200)
+            .type('application/json')
+            .send({
+                object: 'list',
+                data
+            });
     });
 };

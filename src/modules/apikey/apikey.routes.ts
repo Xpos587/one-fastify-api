@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { createApiKeyHandler } from './apikey.controller';
 import { $ref } from './apikey.schema';
 
-export async function apiKeyRoutes(
+export default async function (
     fastify: FastifyInstance
 ) {
     // POST /api/v1/apikey/generate
@@ -12,9 +12,9 @@ export async function apiKeyRoutes(
         {
             preHandler: fastify.localhostenticate,
             schema: {
-                body: $ref('createApiKeySchema'),
+                body: $ref('create_apikey_schema'),
                 response: {
-                    200: $ref('responseCreateApiKeySchema')
+                    200: $ref('response_create_apikey_schema')
                 }
             }
         },

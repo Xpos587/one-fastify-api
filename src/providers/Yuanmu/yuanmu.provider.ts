@@ -324,7 +324,7 @@ export class Yuanmu extends CompletionProvider {
         const { data } = await axios.post(
             'https://chat.yuanmu.tech/api/auth/login',
             {
-                email: 'jhajkssh@gmail.com',
+                email: 'hellokittie3089@mail.tm',
                 password: 'qwerty12345'
             },
             {

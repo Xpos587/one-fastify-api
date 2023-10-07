@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export class NyxAI extends CompletionProvider {
     url = 'https://api.geneplore.com/';
-    working = true;
+    working = false;
     hasStream = true;
 
     async *create_completion(

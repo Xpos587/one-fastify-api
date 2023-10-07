@@ -1,0 +1,30 @@
+{
+  "date": "2023-10-06T18:15:38.011Z",
+  "argv": [
+    "C:\\my-apps\\nodejs\\node.exe",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\node_modules\\thread-stream\\lib\\worker.js"
+  ],
+  "execArgv": [
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/ts-node/esm.mjs",
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/mock/dist/esm/legacy-loader.mjs",
+    "--no-warnings",
+    "--enable-source-maps",
+    "--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/processinfo/dist/esm/loader.mjs",
+    "--require=ts-node/register"
+  ],
+  "NODE_OPTIONS": "\"--loader=file:///C:/Users/x3082/codes/JavaScript/one-fastify-api/node_modules/@tapjs/processinfo/dist/esm/loader-legacy.mjs\" \"--no-warnings\"",
+  "cwd": "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api",
+  "pid": 6580,
+  "ppid": 7632,
+  "parent": "36edbb49-6558-4626-9f00-e9f9f19ee778",
+  "uuid": "e9c5562f-aa68-4da9-a65a-48f1b24be749",
+  "files": [
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\node_modules\\thread-stream\\lib\\worker.js",
+    "C:\\Users\\x3082\\codes\\JavaScript\\one-fastify-api\\node_modules\\pino-pretty\\index.js"
+  ],
+  "sources": {},
+  "root": "36edbb49-6558-4626-9f00-e9f9f19ee778",
+  "code": 0,
+  "signal": null,
+  "runtime": 262.2076
+}

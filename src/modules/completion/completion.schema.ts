@@ -1,7 +1,7 @@
 import { buildJsonSchemas } from 'fastify-zod';
 import { z as zod } from 'zod';
 
-const createCompletionSchema = zod.object({
+const create_completion_schema = zod.object({
     model: zod.string(),
     messages: zod.array(zod.object({
         role: zod.enum(['user', 'assistant', 'system', 'function']),
@@ -16,7 +16,7 @@ const createCompletionSchema = zod.object({
     frequency_penalty: zod.number()
 });
 
-const responseCompletionSchema = zod.object({
+const response_completion_schema = zod.object({
     id: zod.string(),
     object: zod.string(),
     createdAt: zod.number(),
@@ -40,11 +40,23 @@ const responseCompletionSchema = zod.object({
     }).optional(),
 });
 
-export type CreateCompletionInput = zod.infer<typeof createCompletionSchema>;
+const response_models_completion_schema = zod.object({
+    object: zod.string(),
+    data: zod.array(zod.object({
+        id: zod.string(),
+        object: zod.string(),
+        createdAt: zod.number(),
+        owned_by: zod.string(),
+        // status: zod.enum(['working', 'maintenance'])
+    }))
+});
+
+export type CreateCompletionInput = zod.infer<typeof create_completion_schema>;
 
 export const completionModels = {
-    createCompletionSchema,
-    responseCompletionSchema
+    create_completion_schema,
+    response_completion_schema,
+    response_models_completion_schema
 };
 
 export const { schemas: completionSchemas, $ref } = buildJsonSchemas(completionModels, { $id: 'completionSchema' });

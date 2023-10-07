@@ -30,7 +30,7 @@ export async function createApiKeyHandler(
         });
 
         if (existingApiKey) {
-            // Если API ключ уже существует, обновляем его
+            // If the API key already exists, update it
             const { hash, salt } = hashApiKey(`${user?.id}-${user?.createdAt}-${user?.telegramId}`);
 
             const updatedApiKey = await request.server.prisma.apiKey.update({
@@ -53,7 +53,7 @@ export async function createApiKeyHandler(
                     createdAt: user?.createdAt,
                 });
         } else {
-            // Если API ключ не существует, создаем его
+            // If the API key does not exist, create it
             const { hash, salt } = hashApiKey(`${user?.id}-${user?.createdAt}-${user?.telegramId}`);
 
             const apiKey = await request.server.prisma.apiKey.create({
@@ -87,7 +87,7 @@ export async function createApiKeyHandler(
         } else {
             reply.code(500).send({
                 error: {
-                    message: 'Internal Server Error',
+                    message: 'Internal server error occurred during request handling.',
                     type: 'internal_server_error',
                     param: null,
                     code: null

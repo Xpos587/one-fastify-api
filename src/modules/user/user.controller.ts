@@ -33,6 +33,9 @@ export async function createUserHandler(
                 data: {
                     telegramId,
                     createdAt: new Date(Date.now()).toISOString(),
+                    requestCounts: {},
+                    dailyRequestCounts: {},
+                    minuteRequestCounts: {}
                 }
             });
 
@@ -56,7 +59,7 @@ export async function createUserHandler(
             } else {
                 reply.code(500).send({
                     error: {
-                        message: 'Internal Server Error',
+                        message: 'Internal server error occurred during request handling.',
                         type: 'internal_server_error',
                         param: null,
                         code: null
@@ -97,6 +100,9 @@ export async function getUserByIdHandler(
                     id: user?.id,
                     object: 'user.information',
                     createdAt: user?.createdAt,
+                    requestCounts: user?.requestCounts || {},
+                    dailyRequestCounts: user?.dailyRequestCounts || {},
+                    minuteRequestCounts: user?.minuteRequestCounts || {},
                     balance: user?.balance,
                     telegramId: user?.telegramId
                 });
@@ -113,7 +119,7 @@ export async function getUserByIdHandler(
             } else {
                 reply.code(500).send({
                     error: {
-                        message: 'Internal Server Error',
+                        message: 'Internal server error occurred during request handling.',
                         type: 'internal_server_error',
                         param: null,
                         code: null

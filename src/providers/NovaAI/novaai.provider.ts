@@ -34,8 +34,6 @@ export class NovaAI extends CompletionProvider {
             apiKey: 'nv-RFn9U2SI5Cf0G4dxTWL7N0V4x0SS4bPqkWlXj0AOwsLzTC55'
         });
 
-        fastify.log.info('Zuki completionStream');
-
         const completionStream = await openai.chat.completions.create({
             messages: messages,
             model: model,
